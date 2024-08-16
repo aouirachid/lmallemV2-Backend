@@ -40,15 +40,16 @@ class PermissionController extends Controller
      */
     public function show(Permission $permission)
     {
-        //
+        return response()->json(['permission' => $permission]);
+
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Permission $permission)
+    public function edit($permission)
     {
-        //
+
     }
 
     /**
@@ -56,7 +57,14 @@ class PermissionController extends Controller
      */
     public function update(Request $request, Permission $permission)
     {
-        //
+        $request->validate([
+            'name' => 'required','string'
+        ]);
+
+        
+        // $book->fill($request->post())->update();
+        $permission->update($request->all());
+        return response()->json(['message' => 'Book updated successfully']);
     }
 
     /**
@@ -64,6 +72,7 @@ class PermissionController extends Controller
      */
     public function destroy(Permission $permission)
     {
-        //
+        $permission->delete();
+        return response()->json(['message' => 'permission deleted successfully']);
     }
 }
