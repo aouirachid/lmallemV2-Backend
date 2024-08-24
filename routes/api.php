@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\roleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -9,3 +11,6 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::resource('permissions',PermissionController::class);
+Route::resource('roles',roleController::class);
+Route::post('roles/{roleId}/give-permissions',[roleController::class,'addPermissionToRole']);
+Route::resource('categories',CategoryController::class);

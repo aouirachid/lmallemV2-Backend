@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Permission;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
 
 class PermissionController extends Controller
@@ -32,7 +32,7 @@ class PermissionController extends Controller
             'name' => 'required','string','uniqe:permissions,name'
         ]);
         Permission::create(['name' => $request->name]);
-        return response()->json(['message' => 'Book created successfully']);
+        return response()->json(['message' => 'permission created successfully']);
     }
 
     /**
@@ -64,7 +64,7 @@ class PermissionController extends Controller
         
         // $book->fill($request->post())->update();
         $permission->update($request->all());
-        return response()->json(['message' => 'Book updated successfully']);
+        return response()->json(['message' => 'permission updated successfully']);
     }
 
     /**
