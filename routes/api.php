@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminPanelController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\roleController;
@@ -15,7 +16,9 @@ Route::get('/user', function (Request $request) {
 Route::resource('permissions',PermissionController::class);
 Route::resource('roles',roleController::class);
 Route::post('roles/{roleId}/give-permissions',[roleController::class,'addPermissionToRole']);
+Route::get('roles-with-permissions', [RoleController::class, 'getRolesWithPermissions']);
 Route::resource('categories',CategoryController::class);
 Route::resource('services',ServiceController::class);
 Route::post('/services/{id}',[ServiceController::class,'update']);
+Route::resource('admin-panels',AdminPanelController::class);
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class userController extends Controller
@@ -11,7 +12,7 @@ class userController extends Controller
      */
     public function index()
     {
-        //
+        return User::select('id','name','type','phone','email','city','username','password')->get();
     }
 
     /**
@@ -19,7 +20,7 @@ class userController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -27,15 +28,27 @@ class userController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'type' => 'required',
+            'phone' => 'required',
+            'email'=> 'required',
+            'city' => 'required',
+            'username' => 'required',
+            'password' => 'required',
+            'role' => 'required',
+        ]);
+        $user = User::create($request->all());
+        $user->syncRoles($request->role);
+        return response()->json(['message' => 'User created successfully']);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user )
     {
-        //
+        return response()->json(['user'=>$user]);
     }
 
     /**
@@ -49,16 +62,27 @@ class userController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request,User $user ,string $id)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'type' => 'required',
+            'phone' => 'required',
+            'email'=> 'required',
+            'city' => 'required',
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+        $user->update($request->all());
+        return response()->json(['message' => 'User updated successfully']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return response()->json(['message' => 'User deleted successfully']);
     }
 }

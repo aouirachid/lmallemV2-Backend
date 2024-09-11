@@ -94,6 +94,10 @@ class roleController extends Controller
 
         return response()->json(['message' => 'Permissions assigned successfully'], 200);
     }
+    public function getRolesWithPermissions()
+    {
+        return Role::with('permissions')->get();
+    }
 
 
 }
