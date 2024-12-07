@@ -46,7 +46,7 @@ class AdminPanelController extends Controller
             'city' => 'required',
             'username' => 'required|unique:users',
             'password' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'required',
             'role' => 'required'
         ]);

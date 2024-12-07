@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminPanelController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\roleController;
@@ -21,4 +22,10 @@ Route::resource('categories',CategoryController::class);
 Route::resource('services',ServiceController::class);
 Route::post('/services/{id}',[ServiceController::class,'update']);
 Route::resource('admin-panels',AdminPanelController::class);
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+Route::middleware('auth:api')->group(function () {
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('user', [AuthController::class, 'user']);
+});
 
