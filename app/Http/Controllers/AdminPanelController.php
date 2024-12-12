@@ -57,7 +57,12 @@ class AdminPanelController extends Controller
         $role = Role::findById($request->role);
         $user->syncRoles($role);
 
-        $imagePath = $request->file('image')->store('admin_images', 'public');
+        $imagePath = $request->hasFile('image') 
+        ? $request->file('image')->store('admin_images', 'public') 
+        : null;  // Or use a default image path if needed
+
+
+        //$imagePath = $request->file('image')->store('admin_images', 'public');
 
         $adminPanel = AdminPanel::create([
             'imagePath' => $imagePath,

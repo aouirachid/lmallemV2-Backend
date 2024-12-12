@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('admin_panels', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('imagePath');
+            $table->string('imagePath')->default('admin_images/')->nullable();
             $table->string('status');
             $table->timestamps();
             $table->foreignId('user_id');
