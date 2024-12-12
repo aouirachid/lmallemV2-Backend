@@ -15,12 +15,6 @@ class AdminPanelController extends Controller
      */
     public function index()
     {
-        // $adminPanels = AdminPanel::with(['user', 'user.roles']);
-        // $roles = Role::all(); // Get all available roles
-        // return response()->json([
-        //     'adminPanels' => $adminPanels,
-        //     'allRoles' => $roles
-        // ]);
         $adminPanels = AdminPanel::with(['user', 'user.roles'])->get();
         return response()->json($adminPanels);
     }

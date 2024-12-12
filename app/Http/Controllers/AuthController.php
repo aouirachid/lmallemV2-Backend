@@ -52,9 +52,11 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
+        $roles = $user->roles->pluck('name'); // Get the roles as an array of names
         return response()->json([
             'status' => 'success',
             'user' => $user,
+            'roles' => $roles, // Include roles in the response
             'authorisation' => [
                 'token' => $token,
                 'type' => 'bearer',
