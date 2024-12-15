@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\adminPanel;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,13 +51,23 @@ class AuthController extends Controller
                 'message' => 'Unauthorized',
             ], 401);
         }
-
+        
         $user = Auth::user();
-        $roles = $user->roles->pluck('name'); // Get the roles as an array of names
+        $adminPanel = adminPanel::where('user_id', $user->id)->first();
+
+        if ($adminPanel && $adminPanel->status !== '1') {
+            Auth::logout();
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Your admin account is inactive. Please contact support.',
+            ], 403);
+        }
+        $roles = $user->roles->pluck('name');
         return response()->json([
             'status' => 'success',
             'user' => $user,
-            'roles' => $roles, // Include roles in the response
+            'roles' => $roles,
             'authorisation' => [
                 'token' => $token,
                 'type' => 'bearer',
