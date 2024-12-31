@@ -5,11 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\adminPanel;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 
-class AdminPanelController extends Controller
+class AdminPanelController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('View admin,api'), only: ['index']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('create admin,api'), only: ['store']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('update admin,api'), only: ['update']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('delete admin,api'), only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
