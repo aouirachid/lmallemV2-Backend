@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class ClientController extends Controller
 {
@@ -13,7 +15,8 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        $client = Client::with(['user', 'user.roles'])->get();
+        return response()->json($client);
     }
 
     /**
@@ -29,15 +32,64 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'type' => 'required',
+            'phone' => 'required',
+            'email' => 'required|email|unique:users',
+            'city' => 'required',
+            'username' => 'required|unique:users',
+            'password' => 'required',
+            'denomination' => 'nullable',
+            'rc' => 'nullable',
+            'ice' => 'nullable',
+            'status' => 'required',
+            'role' => 'required'
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'type' => $request->type,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'city' => $request->city,
+            'username' => $request->username,
+            'password' => bcrypt($request->password),
+        ]);
+        $role = Role::findById($request->role);
+        $user->syncRoles($role);
+
+        // $imagePath = $request->hasFile('image')
+        // ? $request->file('image')->store('admin_images', 'public')
+        // : null;  // Or use a default image path if needed
+
+
+        //$imagePath = $request->file('image')->store('admin_images', 'public');
+
+        $client = Client::create([
+            // 'imagePath' => $imagePath,
+            'denomination' => $request->denomination,
+            'rc'  => $request->rc,
+            'ice' => $request->ice,
+            'status' => $request->status,
+            'user_id' => $user->id,
+        ]);
+
+        return response()->json(['message' => 'Client created successfully', 'data' => $client]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Client $client)
+    public function show($id)
     {
-        //
+        $client = Client::with(['user', 'user.roles'])->findOrFail($id);
+        $roles = Role::all(); // Get all available roles
+        return response()->json([
+            'client' => $client,
+            'allRoles' => $roles
+        ]);
+    
     }
 
     /**
@@ -51,16 +103,66 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Client $client)
+    public function update(Request $request, $id)
     {
-        //
+        $client = Client::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required',
+            'type' => 'required',
+            'phone' => 'required',
+            'email' => 'required|email|unique:users,email,' . $client->user_id,
+            'city' => 'required',
+            'username' => 'required|unique:users,username,' . $client->user_id,
+            // 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'denomination' => 'nullable',
+            'rc' => 'nullable',
+            'ice' => 'nullable',
+            'status' => 'required',
+            'role' => 'required|exists:roles,id',
+        ]);
+
+        $client->user->update([
+            'name' => $request->name,
+            'type' => $request->type,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'city' => $request->city,
+            'username' => $request->username,
+            'password' => bcrypt($request->password),
+        ]);
+
+        // Update role
+        $role = Role::findById($request->role);
+        $client->user->syncRoles([$role]);
+
+        // if ($request->hasFile('image')) {
+        //     Storage::disk('public')->delete($client->imagePath);
+        //     $imagePath = $request->file('image')->store('admin_images', 'public');
+        //     $client->imagePath = $imagePath;
+        // }
+
+        $client->update([
+            'denomination' => $request->denomination,
+            'rc'  => $request->rc,
+            'ice' => $request->ice,
+            'status' => $request->status,
+        ]);
+        // $client->save();
+
+        return response()->json(['message' => 'Client updated successfully', 'data' => $client]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Client $client)
+    public function destroy($id)
     {
-        //
+        $client = Client::findOrFail($id);
+        // Storage::disk('public')->delete($client->imagePath);
+        $client->user->delete();
+        $client->delete();
+
+        return response()->json(['message' => 'Client deleted successfully']);
     }
 }

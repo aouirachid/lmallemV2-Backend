@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('denomination')->unique();
-            $table->bigInteger('rc');
-            $table->bigInteger('ice');
+            $table->string('denomination')->unique()->nullable();
+            $table->bigInteger('rc')->nullable();
+            $table->bigInteger('ice')->nullable();
             $table->string('status');
             $table->timestamps();
             $table->foreignId('user_id');
