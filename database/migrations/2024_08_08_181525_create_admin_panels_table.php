@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('imagePath')->default('admin_images/')->nullable();
             $table->string('status');
             $table->timestamps();
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
         });
     }
 
