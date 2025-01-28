@@ -132,6 +132,7 @@ class AdminPanelController extends Controller implements HasMiddleware
             'email' => $request->email,
             'city' => $request->city,
             'username' => $request->username,
+            'password' => $request->password ? bcrypt($request->password) : $adminPanel->user->password,
         ]);
 
         // Update role

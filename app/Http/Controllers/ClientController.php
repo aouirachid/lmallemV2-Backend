@@ -129,7 +129,7 @@ class ClientController extends Controller
             'email' => $request->email,
             'city' => $request->city,
             'username' => $request->username,
-            'password' => bcrypt($request->password),
+            'password' => $request->password ? bcrypt($request->password) : $client->user->password,
         ]);
 
         // Update role

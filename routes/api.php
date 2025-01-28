@@ -4,11 +4,10 @@ use App\Http\Controllers\AdminPanelController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\HandyManController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\roleController;
 use App\Http\Controllers\ServiceController;
-use App\Models\Service;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 
@@ -36,5 +35,6 @@ Route::middleware(['auth:api'])->group(function () {
     Route::middleware(['role:Onboarding'])->group(function () {});
 });
 Route::resource('clients', ClientController::class);
-
+Route::resource('handy-men', HandyManController::class);
+Route::post('/handy-men/{id}', [HandyManController::class, 'update']);
 
