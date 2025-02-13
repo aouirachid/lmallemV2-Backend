@@ -9,10 +9,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class handyMan extends Model
 {
     use HasFactory;
+    protected $table = 'handy_men';
     protected $fillable = [
         'ice',
         'specializedField',
         'accountNumber',
+        'bankName',
         'status',
         'user_id'
     ];

@@ -42,6 +42,7 @@ class HandyManController extends Controller
             'ice' => 'required|unique:handy_men',
             'specializedField' => 'required',
             'accountNumber' => 'required|unique:handy_men',
+            'bankName' => 'required',
             'selfEmployedCard' => 'required',
             'Anthropometric' => 'required',
             'diploma' => 'required',
@@ -60,6 +61,7 @@ class HandyManController extends Controller
             'ice' => $request->ice,
             'specializedField' => $request->specializedField,
             'accountNumber' => $request->accountNumber,
+            'bankName' => $request->bankName,
             'status' => $request->status,
             'user_id' => $user->id,
         ]);
@@ -72,7 +74,7 @@ class HandyManController extends Controller
         $diploma = $request->hasFile('diploma')
         ? $request->file('diploma')->store('diploma', 'public')
         : null;
-        handyMan::create([
+        Document::create([
             'selfEmployedCard' => $selfEmployedCard,
             'Anthropometric' => $Anthropometric,
             'diploma' => $diploma,
@@ -116,6 +118,7 @@ class HandyManController extends Controller
             'ice' => 'required|unique:handy_men,ice,' . $handyMan->id,
             'specializedField' => 'required',
             'accountNumber' => 'required|unique:handy_men,accountNumber,' . $handyMan->id,
+            'bankName' => 'required',
             'selfEmployedCard' => 'nullable|file|mimes:jpeg,png,pdf',
             'Anthropometric' => 'nullable|file|mimes:jpeg,png,pdf',
             'diploma' => 'nullable|file|mimes:jpeg,png,pdf',
@@ -138,6 +141,7 @@ class HandyManController extends Controller
             'ice' => $request->ice,
             'specializedField' => $request->specializedField,
             'accountNumber' => $request->accountNumber,
+            'bankName' => $request->bankName,
             'status' => $request->status,
         ]);
 
