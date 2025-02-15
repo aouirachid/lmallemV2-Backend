@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Document;
-use App\Models\handyMan;
+use App\Models\HandyMan;
 use App\Models\User;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
 class HandyManController extends Controller
@@ -15,7 +16,8 @@ class HandyManController extends Controller
      */
     public function index()
     {
-        //
+        $handyMen = HandyMan::with(['user', 'documents'])->get();
+        return response()->json($handyMen);
     }
 
     /**
@@ -57,7 +59,7 @@ class HandyManController extends Controller
             'username' => $request->username,
             'password' => bcrypt($request->password),
         ]);
-        $handyMan = handyMan::create([
+        $handyMan = HandyMan::create([
             'ice' => $request->ice,
             'specializedField' => $request->specializedField,
             'accountNumber' => $request->accountNumber,
@@ -86,9 +88,10 @@ class HandyManController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(handyMan $handyMan)
+    public function show($id)
     {
-        return response()->json(['data' => $handyMan]);
+        $handyMan = HandyMan::with(['user', 'documents'])->findOrFail($id);
+        return response()->json($handyMan);
     }
 
     /**
@@ -104,7 +107,7 @@ class HandyManController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $handyMan = handyMan::findOrFail($id);
+        $handyMan = HandyMan::findOrFail($id);
 
         // Validate request data
         $request->validate([
@@ -114,14 +117,11 @@ class HandyManController extends Controller
             'email' => 'required|email|unique:users,email,' . $handyMan->user_id,
             'city' => 'required',
             'username' => 'required|unique:users,username,' . $handyMan->user_id,
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'password' => 'nullable', 
             'ice' => 'required|unique:handy_men,ice,' . $handyMan->id,
             'specializedField' => 'required',
             'accountNumber' => 'required|unique:handy_men,accountNumber,' . $handyMan->id,
             'bankName' => 'required',
-            'selfEmployedCard' => 'nullable|file|mimes:jpeg,png,pdf',
-            'Anthropometric' => 'nullable|file|mimes:jpeg,png,pdf',
-            'diploma' => 'nullable|file|mimes:jpeg,png,pdf',
             'status' => 'required',
         ]);
 
@@ -166,6 +166,8 @@ class HandyManController extends Controller
 
         return response()->json(['message' => 'Handyman updated successfully']);
     }
+    
+
 
 
     /**
@@ -173,7 +175,7 @@ class HandyManController extends Controller
      */
     public function destroy($id)
     {
-        $handyMan = handyMan::with('document')->findOrFail($id);
+        $handyMan = HandyMan::with('user', 'documents')->findOrFail($id);
 
         // Delete files if they exist
         if ($handyMan->document) {

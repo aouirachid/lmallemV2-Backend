@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class handyMan extends Model
+class HandyMan extends Model
 {
     use HasFactory;
     protected $table = 'handy_men';
@@ -29,6 +30,15 @@ class handyMan extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     * Get all of the document for the handyMan
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function documents(): HasMany
+    {
+        return $this->hasMany(Document::class);
+    }
     
 
 }
