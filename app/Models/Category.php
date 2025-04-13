@@ -19,7 +19,7 @@ class Category extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function Service(): HasMany
+    public function service(): HasMany
     {
         return $this->hasMany(Service::class);
     }

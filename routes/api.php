@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\HandyManController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\roleController;
 use App\Http\Controllers\ServiceController;
@@ -36,5 +37,6 @@ Route::middleware(['auth:api'])->group(function () {
 });
 Route::resource('clients', ClientController::class);
 Route::resource('handy-men', HandyManController::class);
+Route::resource('orders', OrderController::class);
 Route::post('/handy-men/{id}', [HandyManController::class, 'update']);
 

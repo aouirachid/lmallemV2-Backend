@@ -40,5 +40,14 @@ class HandyMan extends Model
         return $this->hasMany(Document::class);
     }
     
+    /**
+     * Get all of the orders for the HandyMan
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
 
 }

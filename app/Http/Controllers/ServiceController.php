@@ -24,7 +24,9 @@ class ServiceController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        return Service::select('id','name','image','description','status','category_id')->get();
+        $service = Service::with(['category'])->get();
+        return response()->json($service);
+        // return Service::select('id','name','image','description','status','category_id')->get();
     }
 
     /**
