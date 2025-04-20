@@ -12,7 +12,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $order = Order::with(['client', 'handy_men', 'service'])->get();
+        $order = Order::with(['client', 'handy_men', 'service', 'client.user', 'handy_men.user'])->get();
         return response()->json($order);
     }
 
