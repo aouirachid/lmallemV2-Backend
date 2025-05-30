@@ -20,7 +20,7 @@ return new class extends Migration
             $table->float('orderPrice');
             $table->string('orderDescription')->nullable();
             $table->string('orderDate')->nullable();
-            $table->string('orderDelivredAt')->nullable();
+            $table->string('orderDeliveredAt')->nullable();
             $table->string('orderStatus')->default('pending');
             $table->string('orderLocation')->nullable();
             $table->timestamps();

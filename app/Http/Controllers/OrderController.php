@@ -49,7 +49,7 @@ class OrderController extends Controller
             'orderPrice' => $request->orderPrice,
             'orderDescription' => $request->orderDescription,
             'orderDate' => $request->orderDate,
-            'orderDelivredAt' => $request->orderDelivredAt,
+            'orderDeliveredAt' => $request->orderDeliveredAt,
             'orderStatus'  => $request->orderStatus,
             'orderLocation' => $request->orderLocation,
         ]);
@@ -61,6 +61,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
+
         return response()->json(['order' => $order]);
     }
 
@@ -75,9 +76,26 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, $id)
     {
-        //
+        $order = Order::findOrFail($id);
+        $request->validate([
+            'handy_men_id' => 'required|exists:handy_men,id',
+            'orderPrice' => 'required|numeric',
+            'orderDescription' => 'required|string',
+            'orderDeliveredAt' => 'nullable|date',
+            'orderStatus' => 'required|string',
+            'orderLocation' => 'required|string',
+        ]);
+        $order->update([
+            'handy_men_id' => $request->handy_men_id,
+            'orderPrice' => $request->orderPrice,
+            'orderDescription' => $request->orderDescription,
+            'orderDeliveredAt' => $request->orderDeliveredAt,
+            'orderStatus'  => $request->orderStatus,
+            'orderLocation' => $request->orderLocation,
+        ]);
+        return response()->json(['message' => 'Order Updated successfully']);
     }
 
     /**
