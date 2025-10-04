@@ -5,12 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Document;
 use App\Models\HandyMan;
 use App\Models\User;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\Middleware;
 
-class HandyManController extends Controller
+class HandyManController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('view handyman,api'), only: ['index']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('create handyman,api'), only: ['store']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('update handyman,api'), only: ['update']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('delete handyman,api'), only: ['destroy']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
