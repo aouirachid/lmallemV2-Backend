@@ -12,9 +12,9 @@ class OrderController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('view order,api'), only: ['index']),
-            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('create order,api'), only: ['store']),
-            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('update order,api'), only: ['update']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('view orders,api'), only: ['index']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('create orders,api'), only: ['store']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('update orders,api'), only: ['update']),
         ];
     }
     /**

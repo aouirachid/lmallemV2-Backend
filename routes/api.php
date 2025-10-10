@@ -24,19 +24,20 @@ Route::middleware(['auth:api'])->group(function () {
         Route::resource('categories', CategoryController::class);
         Route::resource('services', ServiceController::class);
         Route::post('/services/{id}', [ServiceController::class, 'update']);
+        Route::resource('orders', OrderController::class);
+        Route::resource('handy-men', HandyManController::class);
+        Route::post('/handy-men/{id}', [HandyManController::class, 'update']);
     });
     Route::middleware(['role:Administrator'])->group(function () {
         Route::resource('permissions', PermissionController::class);
         Route::resource('roles', roleController::class);
         Route::post('roles/{roleId}/give-permissions', [roleController::class, 'addPermissionToRole']);
         Route::get('roles-with-permissions', [RoleController::class, 'getRolesWithPermissions']);
+        Route::resource('clients', ClientController::class);
     });
-    Route::middleware(['role:cs - dispatch'])->group(function () {});
+    Route::middleware(['role:cs - dispatch'])->group(function () {
+        Route::resource('clients', ClientController::class);
+    });
     Route::middleware(['role:Manager'])->group(function () {});
     Route::middleware(['role:Onboarding'])->group(function () {});
 });
-Route::resource('clients', ClientController::class);
-Route::resource('handy-men', HandyManController::class);
-Route::resource('orders', OrderController::class);
-Route::post('/handy-men/{id}', [HandyManController::class, 'update']);
-

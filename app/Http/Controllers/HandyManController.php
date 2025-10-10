@@ -16,10 +16,10 @@ class HandyManController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('view handyman,api'), only: ['index']),
-            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('create handyman,api'), only: ['store']),
-            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('update handyman,api'), only: ['update']),
-            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('delete handyman,api'), only: ['destroy']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('view handy man,api'), only: ['index']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('create handy man,api'), only: ['store']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('update handy man,api'), only: ['update']),
+            new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('delete handy man,api'), only: ['destroy']),
         ];
     }
     /**
