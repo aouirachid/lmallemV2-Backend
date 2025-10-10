@@ -18,12 +18,13 @@ class CategoryController extends Controller implements HasMiddleware
             new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('delete category,api'), only: ['destroy']),
         ];
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Category::select('id','name','estimatedPrice','status')->get();
+        return Category::select('id', 'name', 'estimatedPrice', 'status')->get();
     }
 
     /**
@@ -45,6 +46,7 @@ class CategoryController extends Controller implements HasMiddleware
             'status' => 'required',
         ]);
         Category::create($request->all());
+
         return response()->json(['message' => 'Category created successfully']);
     }
 
@@ -53,7 +55,7 @@ class CategoryController extends Controller implements HasMiddleware
      */
     public function show(Category $category)
     {
-        return response()->json(['category'=>$category]);
+        return response()->json(['category' => $category]);
     }
 
     /**
@@ -75,6 +77,7 @@ class CategoryController extends Controller implements HasMiddleware
             'status' => 'required|string',
         ]);
         $category->update($request->all());
+
         return response()->json(['message' => 'Category updated successfully']);
     }
 
@@ -84,6 +87,7 @@ class CategoryController extends Controller implements HasMiddleware
     public function destroy(Category $category)
     {
         $category->delete();
+
         return response()->json(['message' => 'Category deleted successfully']);
     }
 }

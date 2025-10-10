@@ -9,15 +9,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Category extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'name',
         'estimatedPrice',
         'status',
     ];
+
     /**
      * Get all of the Service for the Category
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function service(): HasMany
     {

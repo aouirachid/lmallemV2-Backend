@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Log;
+use Spatie\Permission\Models\Role;
 
 class roleController extends Controller implements HasMiddleware
 {
@@ -21,12 +20,13 @@ class roleController extends Controller implements HasMiddleware
             new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('Add permission to role,api'), only: ['addPermissionToRole']),
         ];
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Role::select('id','name')->get();
+        return Role::select('id', 'name')->get();
     }
 
     /**
@@ -43,9 +43,10 @@ class roleController extends Controller implements HasMiddleware
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required','string','uniqe:roles,name'
+            'name' => 'required', 'string', 'uniqe:roles,name',
         ]);
         Role::create(['name' => $request->name]);
+
         return response()->json(['message' => 'Role created successfully']);
     }
 
@@ -61,10 +62,7 @@ class roleController extends Controller implements HasMiddleware
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($role)
-    {
-
-    }
+    public function edit($role) {}
 
     /**
      * Update the specified resource in storage.
@@ -72,12 +70,12 @@ class roleController extends Controller implements HasMiddleware
     public function update(Request $request, Role $role)
     {
         $request->validate([
-            'name' => 'required','string'
+            'name' => 'required', 'string',
         ]);
 
-        
         // $book->fill($request->post())->update();
         $role->update($request->all());
+
         return response()->json(['message' => 'Role updated successfully']);
     }
 
@@ -87,6 +85,7 @@ class roleController extends Controller implements HasMiddleware
     public function destroy(Role $role)
     {
         $role->delete();
+
         return response()->json(['message' => 'role deleted successfully']);
     }
 
@@ -106,10 +105,9 @@ class roleController extends Controller implements HasMiddleware
 
         return response()->json(['message' => 'Permissions assigned successfully'], 200);
     }
+
     public function getRolesWithPermissions()
     {
         return Role::with('permissions')->get();
     }
-
-
 }

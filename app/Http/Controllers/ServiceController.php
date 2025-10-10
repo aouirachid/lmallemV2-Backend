@@ -19,12 +19,14 @@ class ServiceController extends Controller implements HasMiddleware
             new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('delete service,api'), only: ['destroy']),
         ];
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $service = Service::with(['category'])->get();
+
         return response()->json($service);
         // return Service::select('id','name','image','description','status','category_id')->get();
     }
@@ -58,6 +60,7 @@ class ServiceController extends Controller implements HasMiddleware
             'status' => $request->status,
             'image' => $imagePath,
         ]);
+
         return response()->json(['message' => 'Service created successfully']);
     }
 
@@ -66,7 +69,7 @@ class ServiceController extends Controller implements HasMiddleware
      */
     public function show(Service $service)
     {
-        return response()->json(['service'=>$service]);
+        return response()->json(['service' => $service]);
     }
 
     /**
@@ -106,6 +109,7 @@ class ServiceController extends Controller implements HasMiddleware
         }
 
         $service->update($data);
+
         return response()->json(['message' => 'Service updated successfully']);
     }
 
@@ -115,6 +119,7 @@ class ServiceController extends Controller implements HasMiddleware
     public function destroy(Service $service)
     {
         $service->delete();
+
         return response()->json(['message' => 'Service deleted successfully']);
     }
 }

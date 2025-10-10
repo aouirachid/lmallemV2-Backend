@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Document;
 use App\Models\HandyMan;
 use App\Models\User;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Storage;
 
 class HandyManController extends Controller implements HasMiddleware
 {
@@ -22,22 +21,21 @@ class HandyManController extends Controller implements HasMiddleware
             new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('delete handy man,api'), only: ['destroy']),
         ];
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $handyMen = HandyMan::with(['user', 'documents'])->get();
+
         return response()->json($handyMen);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -93,6 +91,7 @@ class HandyManController extends Controller implements HasMiddleware
             'diploma' => $diploma,
             'handy_man_id' => $handyMan->id,
         ]);
+
         return response()->json(['message' => 'HandyMan created successfully'], 201);
     }
 
@@ -102,6 +101,7 @@ class HandyManController extends Controller implements HasMiddleware
     public function show($id)
     {
         $handyMan = HandyMan::with(['user', 'documents'])->findOrFail($id);
+
         return response()->json($handyMan);
     }
 
@@ -125,13 +125,13 @@ class HandyManController extends Controller implements HasMiddleware
             'name' => 'required',
             'type' => 'required',
             'phone' => 'required',
-            'email' => 'required|email|unique:users,email,' . $handyMan->user_id,
+            'email' => 'required|email|unique:users,email,'.$handyMan->user_id,
             'city' => 'required',
-            'username' => 'required|unique:users,username,' . $handyMan->user_id,
-            'password' => 'nullable', 
-            'ice' => 'required|unique:handy_men,ice,' . $handyMan->id,
+            'username' => 'required|unique:users,username,'.$handyMan->user_id,
+            'password' => 'nullable',
+            'ice' => 'required|unique:handy_men,ice,'.$handyMan->id,
             'specializedField' => 'required',
-            'accountNumber' => 'required|unique:handy_men,accountNumber,' . $handyMan->id,
+            'accountNumber' => 'required|unique:handy_men,accountNumber,'.$handyMan->id,
             'bankName' => 'required',
             'status' => 'required',
         ]);
@@ -168,7 +168,7 @@ class HandyManController extends Controller implements HasMiddleware
             $documentData['diploma'] = $request->file('diploma')->store('diplomas', 'public');
         }
 
-        if (!empty($documentData)) {
+        if (! empty($documentData)) {
             Document::updateOrCreate(
                 ['handy_man_id' => $handyMan->id], // Match condition
                 $documentData // Update or create with this data
@@ -177,9 +177,6 @@ class HandyManController extends Controller implements HasMiddleware
 
         return response()->json(['message' => 'Handyman updated successfully']);
     }
-    
-
-
 
     /**
      * Remove the specified resource from storage.

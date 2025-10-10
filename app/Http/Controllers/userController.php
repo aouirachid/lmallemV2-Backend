@@ -18,21 +18,19 @@ class userController extends Controller implements HasMiddleware
             new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('delete user,api'), only: ['destroy']),
         ];
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return User::select('id','name','type','phone','email','city','username','password')->get();
+        return User::select('id', 'name', 'type', 'phone', 'email', 'city', 'username', 'password')->get();
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -43,7 +41,7 @@ class userController extends Controller implements HasMiddleware
             'name' => 'required',
             'type' => 'required',
             'phone' => 'required',
-            'email'=> 'required',
+            'email' => 'required',
             'city' => 'required',
             'username' => 'required',
             'password' => 'required',
@@ -51,15 +49,16 @@ class userController extends Controller implements HasMiddleware
         ]);
         $user = User::create($request->all());
         $user->syncRoles($request->role);
+
         return response()->json(['message' => 'User created successfully']);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(User $user )
+    public function show(User $user)
     {
-        return response()->json(['user'=>$user]);
+        return response()->json(['user' => $user]);
     }
 
     /**
@@ -73,18 +72,19 @@ class userController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,User $user ,string $id)
+    public function update(Request $request, User $user, string $id)
     {
         $request->validate([
             'name' => 'required',
             'type' => 'required',
             'phone' => 'required',
-            'email'=> 'required',
+            'email' => 'required',
             'city' => 'required',
             'username' => 'required',
             'password' => 'required',
         ]);
         $user->update($request->all());
+
         return response()->json(['message' => 'User updated successfully']);
     }
 
@@ -94,6 +94,7 @@ class userController extends Controller implements HasMiddleware
     public function destroy(User $user)
     {
         $user->delete();
+
         return response()->json(['message' => 'User deleted successfully']);
     }
 }

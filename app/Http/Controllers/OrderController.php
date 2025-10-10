@@ -17,12 +17,14 @@ class OrderController extends Controller implements HasMiddleware
             new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('update orders,api'), only: ['update']),
         ];
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $order = Order::with(['client', 'handy_men', 'service', 'client.user', 'handy_men.user'])->get();
+
         return response()->json($order);
     }
 
@@ -60,9 +62,10 @@ class OrderController extends Controller implements HasMiddleware
             'orderDescription' => $request->orderDescription,
             'orderDate' => $request->orderDate,
             'orderDeliveredAt' => $request->orderDeliveredAt,
-            'orderStatus'  => $request->orderStatus,
+            'orderStatus' => $request->orderStatus,
             'orderLocation' => $request->orderLocation,
         ]);
+
         return response()->json(['message' => 'Order created successfully']);
     }
 
@@ -102,9 +105,10 @@ class OrderController extends Controller implements HasMiddleware
             'orderPrice' => $request->orderPrice,
             'orderDescription' => $request->orderDescription,
             'orderDeliveredAt' => $request->orderDeliveredAt,
-            'orderStatus'  => $request->orderStatus,
+            'orderStatus' => $request->orderStatus,
             'orderLocation' => $request->orderLocation,
         ]);
+
         return response()->json(['message' => 'Order Updated successfully']);
     }
 

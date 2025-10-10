@@ -28,6 +28,7 @@ class AdminPanelController extends Controller implements HasMiddleware
     public function index()
     {
         $adminPanels = AdminPanel::with(['user', 'user.roles'])->get();
+
         return response()->json($adminPanels);
     }
 
@@ -54,7 +55,7 @@ class AdminPanelController extends Controller implements HasMiddleware
             'password' => 'required',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'required',
-            'role' => 'required'
+            'role' => 'required',
         ]);
 
         $user = User::create([
@@ -69,10 +70,9 @@ class AdminPanelController extends Controller implements HasMiddleware
         $role = Role::findById($request->role);
         $user->syncRoles($role);
 
-        $imagePath = $request->hasFile('image') 
-        ? $request->file('image')->store('admin_images', 'public') 
+        $imagePath = $request->hasFile('image')
+        ? $request->file('image')->store('admin_images', 'public')
         : null;  // Or use a default image path if needed
-
 
         //$imagePath = $request->file('image')->store('admin_images', 'public');
 
@@ -92,9 +92,10 @@ class AdminPanelController extends Controller implements HasMiddleware
     {
         $adminPanel = AdminPanel::with(['user', 'user.roles'])->findOrFail($id);
         $roles = Role::all(); // Get all available roles
+
         return response()->json([
             'adminPanel' => $adminPanel,
-            'allRoles' => $roles
+            'allRoles' => $roles,
         ]);
     }
 
@@ -117,9 +118,9 @@ class AdminPanelController extends Controller implements HasMiddleware
             'name' => 'required',
             'type' => 'required',
             'phone' => 'required',
-            'email' => 'required|email|unique:users,email,' . $adminPanel->user_id,
+            'email' => 'required|email|unique:users,email,'.$adminPanel->user_id,
             'city' => 'required',
-            'username' => 'required|unique:users,username,' . $adminPanel->user_id,
+            'username' => 'required|unique:users,username,'.$adminPanel->user_id,
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'required',
             'role' => 'required|exists:roles,id',

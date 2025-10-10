@@ -6,7 +6,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => [env('FRONTEND_URL')],
 
     'allowed_origins_patterns' => [],
 
@@ -15,7 +15,7 @@ return [
     'exposed_headers' => [],
 
     'max_age' => 0,
-    
+
     'supports_credentials' => false,
 
 ];

@@ -3,21 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class adminPanel extends User
 {
     use HasFactory;
+
     protected $fillable = [
         'imagePath',
         'status',
-        'user_id'
+        'user_id',
     ];
+
     /**
      * Get the user that owns the adminPanel
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user(): BelongsTo
     {

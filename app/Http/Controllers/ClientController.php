@@ -20,13 +20,14 @@ class ClientController extends Controller implements HasMiddleware
             new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('delete client,api'), only: ['destroy']),
         ];
     }
-    
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $client = Client::with(['user', 'user.roles'])->get();
+
         return response()->json($client);
     }
 
@@ -55,7 +56,7 @@ class ClientController extends Controller implements HasMiddleware
             'rc' => 'nullable',
             'ice' => 'nullable',
             'status' => 'required',
-            'role' => 'required'
+            'role' => 'required',
         ]);
 
         $user = User::create([
@@ -74,13 +75,12 @@ class ClientController extends Controller implements HasMiddleware
         // ? $request->file('image')->store('admin_images', 'public')
         // : null;  // Or use a default image path if needed
 
-
         //$imagePath = $request->file('image')->store('admin_images', 'public');
 
         $client = Client::create([
             // 'imagePath' => $imagePath,
             'denomination' => $request->denomination,
-            'rc'  => $request->rc,
+            'rc' => $request->rc,
             'ice' => $request->ice,
             'status' => $request->status,
             'user_id' => $user->id,
@@ -96,11 +96,12 @@ class ClientController extends Controller implements HasMiddleware
     {
         $client = Client::with(['user', 'user.roles'])->findOrFail($id);
         $roles = Role::all(); // Get all available roles
+
         return response()->json([
             'client' => $client,
-            'allRoles' => $roles
+            'allRoles' => $roles,
         ]);
-    
+
     }
 
     /**
@@ -122,9 +123,9 @@ class ClientController extends Controller implements HasMiddleware
             'name' => 'required',
             'type' => 'required',
             'phone' => 'required',
-            'email' => 'required|email|unique:users,email,' . $client->user_id,
+            'email' => 'required|email|unique:users,email,'.$client->user_id,
             'city' => 'required',
-            'username' => 'required|unique:users,username,' . $client->user_id,
+            'username' => 'required|unique:users,username,'.$client->user_id,
             // 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'denomination' => 'nullable',
             'rc' => 'nullable',
@@ -155,7 +156,7 @@ class ClientController extends Controller implements HasMiddleware
 
         $client->update([
             'denomination' => $request->denomination,
-            'rc'  => $request->rc,
+            'rc' => $request->rc,
             'ice' => $request->ice,
             'status' => $request->status,
         ]);

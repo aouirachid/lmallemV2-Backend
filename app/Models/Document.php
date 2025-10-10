@@ -17,8 +17,6 @@ class Document extends Model
 
     /**
      * Get the handyMan that owns the Document
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function handyMan(): BelongsTo
     {

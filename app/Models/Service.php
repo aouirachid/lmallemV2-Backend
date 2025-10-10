@@ -10,21 +10,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Service extends Model
 {
     use HasFactory;
+
     protected $fillable = [
-    'name',
-    'image',
-    'description',
-    'status',
-    'category_id'
+        'name',
+        'image',
+        'description',
+        'status',
+        'category_id',
     ];
+
     public function category(): BelongsTo
     {
-        return $this->belongsTo(Category::class,'category_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
+
     /**
      * Get all of the orders for the Service
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function orders(): HasMany
     {

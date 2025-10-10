@@ -19,6 +19,7 @@ class Order extends Model
         'orderStatus',
         'orderLocation',
     ];
+
     /**
      * Get the client that owns the order
      *
@@ -28,19 +29,17 @@ class Order extends Model
     {
         return $this->belongsTo(Client::class, 'client_id');
     }
+
     /**
      * Get the handy_men that owns the Order
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function handy_men(): BelongsTo
     {
         return $this->belongsTo(HandyMan::class, 'handy_men_id');
     }
+
     /**
      * Get the service that owns the Order
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function service(): BelongsTo
     {

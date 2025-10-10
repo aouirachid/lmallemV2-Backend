@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller implements HasMiddleware
 {
@@ -18,12 +18,13 @@ class PermissionController extends Controller implements HasMiddleware
             new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('delete permission,api'), only: ['destroy']),
         ];
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return Permission::select('id','name')->get();
+        return Permission::select('id', 'name')->get();
     }
 
     /**
@@ -40,9 +41,10 @@ class PermissionController extends Controller implements HasMiddleware
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required','string','uniqe:permissions,name'
+            'name' => 'required', 'string', 'uniqe:permissions,name',
         ]);
         Permission::create(['name' => $request->name]);
+
         return response()->json(['message' => 'permission created successfully']);
     }
 
@@ -58,10 +60,7 @@ class PermissionController extends Controller implements HasMiddleware
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($permission)
-    {
-
-    }
+    public function edit($permission) {}
 
     /**
      * Update the specified resource in storage.
@@ -69,12 +68,12 @@ class PermissionController extends Controller implements HasMiddleware
     public function update(Request $request, Permission $permission)
     {
         $request->validate([
-            'name' => 'required','string'
+            'name' => 'required', 'string',
         ]);
 
-        
         // $book->fill($request->post())->update();
         $permission->update($request->all());
+
         return response()->json(['message' => 'permission updated successfully']);
     }
 
@@ -84,6 +83,7 @@ class PermissionController extends Controller implements HasMiddleware
     public function destroy(Permission $permission)
     {
         $permission->delete();
+
         return response()->json(['message' => 'permission deleted successfully']);
     }
 }
