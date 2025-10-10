@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\adminPanel;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -50,5 +51,14 @@ class DatabaseSeeder extends Seeder
         if ($adminRole) {
             $admin->syncRoles([$adminRole]);
         }
+
+        // Create AdminPanel record for this admin user if not exists
+        adminPanel::firstOrCreate(
+            ['user_id' => $admin->id],
+            [
+                'imagePath' => null,
+                'status' => '1',
+            ]
+        );
     }
 }
